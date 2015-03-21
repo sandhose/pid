@@ -5,7 +5,7 @@ import { getData } from "../../common/request";
 let HomePage = React.createClass({
   statics: {
     fetchData(params) {
-      return getData("/home");
+      return getData("/home", {}, "POST");
     }
   },
 

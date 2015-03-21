@@ -16,9 +16,9 @@ module.exports = {
   devtool: "eval",
 
   // Set entry point to ./src/main and include necessary files for hot load
-  entry:  [
-    "webpack-dev-server/client?http://localhost:9090",
-    "webpack/hot/only-dev-server",
+  entry: [
+    "webpack-dev-server/client?/",
+    "webpack/hot/dev-server",
     "./src/main"
   ],
 
@@ -27,7 +27,7 @@ module.exports = {
   output: {
     path: __dirname + "/build/",
     filename: "app.js",
-    publicPath: "http://localhost:9090/build/"
+    publicPath: "/"
   },
 
   // Necessary plugins for hot load
@@ -47,4 +47,5 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx']
   }
-}
+};
+

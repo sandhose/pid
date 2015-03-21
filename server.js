@@ -1,11 +1,6 @@
 var express = require('express');
 var app = express();
 
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.local.config');
-
-
 /************************************************************
  *
  * Express routes for:
@@ -34,24 +29,26 @@ app.post('/home', function(req, res) {
   });
 });
 
+app.post('/grid', function(req, res) {
+  res.json([
+    [1, 1, 0, 0, 1, 1],
+    [1, 0, 0, 0, 0, 1],
+    [0, 0, 1, 1, 0, 0],
+    [0, 0, 0, 1, 0, 0],
+    [1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1]
+  ]);
+});
 
-/*************************************************************
- *
- * Webpack Dev Server
- *
- * See: http://webpack.github.io/docs/webpack-dev-server.html
- *
- *************************************************************/
-
-new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
-  hot: true,
-  noInfo: true,
-  historyApiFallback: true
-}).listen(9090, 'localhost', function (err, result) {
-  if (err) {
-    console.log(err);
+app.post('/grid/random', function(req, res) {
+  var size = 20, grid = [];
+  for(var i = 0; i < size; i++) {
+    grid[i] = [];
+    for(var j = 0; j < size; j++) {
+      grid[i][j] = Math.random() > 0.7 ? 1 : 0;
+    }
   }
+  res.json(grid);
 });
 
 /******************
@@ -60,7 +57,7 @@ new WebpackDevServer(webpack(config), {
  *
  *****************/
 
-var server = app.listen(8080, function () {
+var server = app.listen(process.env.SERVER_PORT || 8080, function () {
   var host = server.address().address;
   var port = server.address().port;
 

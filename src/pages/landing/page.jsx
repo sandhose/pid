@@ -5,7 +5,7 @@ import { getData } from "../../common/request";
 let LandingPage = React.createClass({
   statics: {
     fetchData(params) {
-      return getData("/landing");
+      return getData("/landing", {}, "POST");
     }
   },
 
@@ -19,6 +19,7 @@ let LandingPage = React.createClass({
     return (
       <div id="landing-page">
         <h1>{title}</h1>
+	<div>Hot loading, yay !</div>
       </div>
     );
   }

@@ -23,6 +23,7 @@ export let getData = function(url, requestData = {}) {
         } else {
           reject(responseObject);
         }
+
       }
     }
 
@@ -33,3 +34,4 @@ export let getData = function(url, requestData = {}) {
 
   return promise;
 };
+
