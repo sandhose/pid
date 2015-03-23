@@ -1,6 +1,17 @@
 var express = require('express');
 var app = express();
 
+var pfHandler = require('./server/pathfinding');
+
+pfHandler.updateGrid([
+  [1, 1, 0, 0, 1, 1],
+  [1, 0, 0, 0, 0, 1],
+  [0, 0, 1, 1, 0, 0],
+  [0, 0, 0, 1, 0, 0],
+  [1, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1]
+]);
+
 /************************************************************
  *
  * Express routes for:
@@ -50,6 +61,8 @@ app.post('/grid/random', function(req, res) {
   }
   res.json(grid);
 });
+
+app.post('/pathfinding/:x1/:y1/:x2/:y2', pfHandler.handler);
 
 /******************
  *
