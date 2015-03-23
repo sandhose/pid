@@ -5,6 +5,8 @@
   "main": "src/main.jsx",
   "scripts": {
     "server": "node server.js",
+    "dev": "node dev-server.js",
+    "watch": "SERVER_PORT=8081 DEV_PORT=$PORT npm run server & SERVER_PORT=8081 DEV_PORT=$PORT npm run dev",
     "build": "webpack -p --config webpack.production.config.js",
     "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
     "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
@@ -42,6 +44,7 @@
     "karma-sinon-chai": "^0.3.0",
     "karma-webpack": "^1.5.0",
     "phantomjs": "^1.9.16",
+    "radium": "^0.10.0",
     "react-hot-loader": "^1.2.3",
     "webpack": "^1.7.2",
     "webpack-dev-server": "^1.7.0"
