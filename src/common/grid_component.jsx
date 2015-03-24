@@ -1,10 +1,7 @@
 import React from "react";
-import { StyleResolverMixin, BrowserStateMixin } from "radium";
 import GridCell from "./grid_cell_component.jsx";
 
 let Grid = React.createClass({
-  mixins: [ StyleResolverMixin, BrowserStateMixin ],
-
   getDefaultProps() {
     return {
       grid: [
@@ -16,21 +13,9 @@ let Grid = React.createClass({
     };
   },
   render() {
-    let rowStyles = this.buildStyles({
-      flex: 1,
-      display: "flex"
-    });
-
-    let gridStyles = this.buildStyles({
-      display: "flex",
-      flexDirection: "column",
-      height: "200px",
-      width: "200px"
-    });
-
     let view = (
       this.props.grid.map((row, rowIndex) => {
-        return (<div key={rowIndex} style={rowStyles}>{
+        return (<div key={rowIndex}>{
           row.map((cell, cellIndex) => {
             return <GridCell key={rowIndex*100 + cellIndex} blocked={Boolean(cell)} />;
           })
@@ -38,7 +23,7 @@ let Grid = React.createClass({
       })
     );
     console.log(view);
-    return <div style={gridStyles}>{view}</div>;
+    return <div>{view}</div>;
   }
 });
 

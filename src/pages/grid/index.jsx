@@ -2,12 +2,10 @@ import React from "react";
 import Grid from "../../common/grid_component.jsx";
 import { getData } from "../../common/request.js";
 
-let GridIndexPage = React.createClass({
-  statics: {
-    fetchData(params) {
-      return getData("/grid/random");
-    }
-  },
+export default class GridIndexPage extends React.Component {
+  static fetchData(params) {
+    return getData("/grid/random");
+  }
 
   render() {
     let style = {
@@ -24,8 +22,4 @@ let GridIndexPage = React.createClass({
       </div>
     );
   }
-});
-
-export default {
-  GridIndexPage
-};
+}

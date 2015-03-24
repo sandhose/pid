@@ -1,17 +1,10 @@
 import React from "react";
 import { getData } from "../../common/request";
 
-
-let HomePage = React.createClass({
-  statics: {
-    fetchData(params) {
-      return getData("/home", {}, "POST");
-    }
-  },
-
+export default class HomePage extends React.Component {
   componentWillMount() {
     console.log("[HomePage] will mount with server response: ", this.props.data.home);
-  },
+  }
 
   render() {
     let { title } = this.props.data.home;
@@ -22,7 +15,8 @@ let HomePage = React.createClass({
       </div>
     );
   }
-});
+}
 
-
-export default HomePage;
+HomePage.fetchData = function(params) {
+  return getData("/home");
+}
