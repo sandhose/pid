@@ -3,8 +3,7 @@ import Router from "react-router";
 let { Route, DefaultRoute, RouteHandler } = Router;
 
 import LandingPage from "../pages/landing/page.jsx";
-import { TestIndexPage, TestNestedPage, TestRouteHandler } from "../pages/test/index.jsx";
-import { GridIndexPage } from "../pages/grid/index.jsx";
+import GridIndexPage from "../pages/grid/index.jsx";
 import NavBar from "../common/navbar_component.jsx";
 
 
@@ -25,6 +24,7 @@ LoggedOutRouter.getRoutes = function() {
   return (
     <Route name="app" path="/" handler={LoggedOutRouter}>
       <DefaultRoute name="landing" handler={LandingPage} />
+      <Route name="/grid" path="grid" handler={GridIndexPage} />
     </Route>
   );
 };

@@ -9,7 +9,7 @@ let GridCell = React.createClass({
 
   render() {
     return (
-      <div classList="cell"></div>
+      <div className="cell"></div>
     );
   }
 });

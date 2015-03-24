@@ -15,15 +15,15 @@ let Grid = React.createClass({
   render() {
     let view = (
       this.props.grid.map((row, rowIndex) => {
-        return (<div key={rowIndex}>{
+        return (<div className="row" key={rowIndex}>{
           row.map((cell, cellIndex) => {
             return <GridCell key={rowIndex*100 + cellIndex} blocked={Boolean(cell)} />;
           })
         }</div>);
       })
     );
-    console.log(view);
-    return <div>{view}</div>;
+
+    return <div className="grid">{view}</div>;
   }
 });
 

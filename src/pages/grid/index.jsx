@@ -8,13 +8,6 @@ export default class GridIndexPage extends React.Component {
   }
 
   render() {
-    let style = {
-      display: "flex",
-      flexDirection: "column",
-      height: "200px",
-      width: "200px"
-    };
-
     return (
       <div id="the-grid">
         <h1>Grille aléatoire</h1>

@@ -2,6 +2,10 @@ import React from "react";
 import { getData } from "../../common/request";
 
 export default class HomePage extends React.Component {
+  static fetchData(params) {
+    return getData("/home");
+  }
+
   componentWillMount() {
     console.log("[HomePage] will mount with server response: ", this.props.data.home);
   }
@@ -15,8 +19,4 @@ export default class HomePage extends React.Component {
       </div>
     );
   }
-}
-
-HomePage.fetchData = function(params) {
-  return getData("/home");
 }
