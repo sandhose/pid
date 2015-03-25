@@ -1,21 +1,14 @@
 import React from "react";
-import { getData } from "../../common/request";
 
 export default class LandingPage extends React.Component {
-  static fetchData(params) {
-    return getData("/landing");
-  }
-
-  componentWillMount() {
-    console.log("[LandingPage] will mount with server response: ", this.props.data.landing);
-  }
-
   render() {
-    let { title } = this.props.data.landing;
+    let title = "Landing Page";
 
     return (
       <div id="landing-page">
         <h1>{title}</h1>
+        <div>Motors speed: {this.props.speed}</div>
+        <div>Motors direction: {this.props.direction}</div>
       </div>
     );
   }

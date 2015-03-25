@@ -5,7 +5,6 @@ var WebpackDevServer = require('webpack-dev-server'),
 var app = new WebpackDevServer(webpack(config), {
   hot: true,
   inline: true,
-  quiet: true,
   contentBase: {
     target: 'http://localhost:' + (process.env.SERVER_PORT || 8080)
   }
@@ -16,6 +15,6 @@ var server = app.listen(process.env.DEV_PORT || 8081, function(err, result) {
 
   var host = "localhost";
   var port = process.env.DEV_PORT || 8081;
-  
+
   console.log("Dev server listening at http://%s:%s", host, port);
 });

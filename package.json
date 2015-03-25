@@ -4,7 +4,7 @@
   "description": "A minimal skeleton for building testable React apps using ES6.",
   "main": "src/main.jsx",
   "scripts": {
-    "server": "node server.js",
+    "server": "babel-node server.js",
     "dev": "node dev-server.js",
     "watch": "SERVER_PORT=8081 DEV_PORT=$PORT npm run server & SERVER_PORT=8081 DEV_PORT=$PORT npm run dev",
     "build": "webpack -p --config webpack.production.config.js",
@@ -44,14 +44,15 @@
     "karma-sinon-chai": "^0.3.0",
     "karma-webpack": "^1.5.0",
     "phantomjs": "^1.9.16",
-    "radium": "^0.10.0",
     "react-hot-loader": "^1.2.3",
     "webpack": "^1.7.2",
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
+    "babel": "^4.7.16",
+    "flummox": "^3.2.0",
+    "pathfinding": "^0.4.16",
     "react": "^0.13.1",
     "react-router": "^0.13.1"
-    "pathfinding": "^0.4.16",
   }
 }

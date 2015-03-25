@@ -1,30 +1,29 @@
 import React from "react";
-import Router from "react-router";
-let { Route, DefaultRoute, RouteHandler } = Router;
+import { Route, DefaultRoute, RouteHandler } from "react-router";
+import FluxComponent from "flummox/component";
 
 import LandingPage from "../pages/landing/page.jsx";
 import GridIndexPage from "../pages/grid/index.jsx";
-import NavBar from "../common/navbar_component.jsx";
+import NavBar from "../components/navbar_component.jsx";
 
+export default class MainRouter extends React.Component {
+  static getRoutes() {
+    return (
+      <Route name="app" path="/" handler={this}>
+        <DefaultRoute name="landing" handler={LandingPage} />
+        <Route name="grid" path="grid" handler={GridIndexPage} />
+      </Route>
+    );
+  }
 
-export default class LoggedOutRouter extends React.Component {
   render() {
     return (
       <div id="container">
-        <NavBar />
-        <div id="main">
-          <RouteHandler {...this.props} />
-        </div>
+        <FluxComponent flux={this.props.flux} connectToStores={["motors"]}>
+          <NavBar />
+          <RouteHandler />
+        </FluxComponent>
       </div>
     );
   }
 }
-
-LoggedOutRouter.getRoutes = function() {
-  return (
-    <Route name="app" path="/" handler={LoggedOutRouter}>
-      <DefaultRoute name="landing" handler={LandingPage} />
-      <Route name="/grid" path="grid" handler={GridIndexPage} />
-    </Route>
-  );
-};

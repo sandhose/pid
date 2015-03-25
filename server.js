@@ -1,9 +1,15 @@
-var express = require('express');
-var app = express();
+import express from "express";
+import React from "react";
+import Router from "react-router";
+import MainRouter from "./src/routers/main";
+import PathfindingHandler from "./server/pathfinding";
+import { readFileSync } from "fs";
+import AppFlux from "./src/flux/AppFlux";
 
-var pfHandler = require('./server/pathfinding');
+let indexPage = readFileSync(__dirname + "/build/index.html").toString();
+let app = express();
 
-pfHandler.updateGrid([
+PathfindingHandler.updateGrid([
   [1, 1, 0, 0, 1, 1],
   [1, 0, 0, 0, 0, 1],
   [0, 0, 1, 1, 0, 0],
@@ -12,20 +18,19 @@ pfHandler.updateGrid([
   [1, 1, 1, 1, 1, 1]
 ]);
 
-/************************************************************
- *
- * Express routes for:
- *   - index.html
- *
- *   Sample endpoints to demo async data fetching:
- *     - POST /landing
- *     - POST /home
- *
- ************************************************************/
-
-// Serve index page
-app.get('*', function(req, res) {
-  res.sendFile(__dirname + '/build/index.html');
+app.get('/app.js', (req, res) => res.sendFile(__dirname + '/build/app.js'));
+app.get('*', (req, res) => {
+  let flux = new AppFlux();
+  flux.getActions("motors").update({ speed: -1, direction: 0 });
+  Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
+    let app = React.renderToString(<Handler flux={flux} />);
+    let fluxData = flux.serialize();
+    res.send(
+        indexPage
+        .replace("<!-- AppNode -->", app)
+        .replace("<!-- FluxData -->", encodeURIComponent(fluxData))
+    );
+  });
 });
 
 app.post('/landing', function(req, res) {
@@ -52,17 +57,17 @@ app.post('/grid', function(req, res) {
 });
 
 app.post('/grid/random', function(req, res) {
-  var size = 20, grid = [];
-  for(var i = 0; i < size; i++) {
+  let size = 20, grid = [];
+  for(let i = 0; i < size; i++) {
     grid[i] = [];
-    for(var j = 0; j < size; j++) {
+    for(let j = 0; j < size; j++) {
       grid[i][j] = Math.random() > 0.7 ? 1 : 0;
     }
   }
   res.json(grid);
 });
 
-app.post('/pathfinding/:x1/:y1/:x2/:y2', pfHandler.handler);
+app.post('/pathfinding/:x1/:y1/:x2/:y2', PathfindingHandler.handler);
 
 /******************
  *
@@ -70,9 +75,9 @@ app.post('/pathfinding/:x1/:y1/:x2/:y2', pfHandler.handler);
  *
  *****************/
 
-var server = app.listen(process.env.SERVER_PORT || 8080, function () {
-  var host = server.address().address;
-  var port = server.address().port;
+let server = app.listen(process.env.SERVER_PORT || 8080, function () {
+  let host = server.address().address;
+  let port = server.address().port;
 
   console.log('Essential React listening at http://%s:%s', host, port);
 });

@@ -1,17 +1,13 @@
 import React from "react";
-import Grid from "../../common/grid_component.jsx";
-import { getData } from "../../common/request.js";
+import Grid from "../../components/grid_component.jsx";
 
 export default class GridIndexPage extends React.Component {
-  static fetchData(params) {
-    return getData("/grid/random");
-  }
-
   render() {
+    let grid = [[0,0,0], [0,0,0], [0,0,0]];
     return (
       <div id="the-grid">
         <h1>Grille aléatoire</h1>
-        <Grid grid={this.props.data.grid} />
+        <Grid grid={grid} />
       </div>
     );
   }
