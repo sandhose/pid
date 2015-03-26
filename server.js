@@ -1,4 +1,6 @@
 import express from "express";
+import sass from "node-sass";
+import path from "path";
 import React from "react";
 import Router from "react-router";
 import MainRouter from "./src/routers/main";
@@ -8,7 +10,7 @@ import ServerFlux from "./src/flux/ServerFlux";
 
 let motorsState = { speed: 0, direction: 0 };
 
-let indexPage = readFileSync(__dirname + "/build/index.html").toString();
+let indexPage = readFileSync(path.join(__dirname, "/build/index.html")).toString();
 let app = express();
 
 PathfindingHandler.updateGrid([
@@ -20,8 +22,26 @@ PathfindingHandler.updateGrid([
   [1, 1, 1, 1, 1, 1]
 ]);
 
+if(process.env.NODE_ENV !== "production") {
+  app.get("/style.css", (req, res) => {
+    let result = sass.renderSync({
+      file: path.join(__dirname, "sass/style.scss"),
+      outFile: path.join(__dirname, ".tmp/style.css"),
+      sourceMap: true,
+      sourceMapEmbed: true,
+      sourceMapContents: true
+    });
 
-app.get('/app.js', (req, res) => res.sendFile(__dirname + '/build/app.js'));
+    console.log(result);
+
+    res.type("css");
+    res.send(result.css);
+    res.end();
+  });
+}
+
+app.use(express.static("build", { index: false }));
+
 app.get('*', (req, res) => {
   let flux = new ServerFlux();
   flux.populateData({ motors: motorsState });
