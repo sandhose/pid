@@ -1,12 +1,15 @@
 import { Flux } from "flummox";
-import MotorsActions from "../actions/MotorsActions";
 import MotorsStore from "../stores/MotorsStore";
 
 export default class AppFlux extends Flux {
   constructor() {
     super();
 
-    this.createActions("motors", MotorsActions);
+    this.createAppActions();
     this.createStore("motors", MotorsStore, this);
+  }
+
+  createAppActions() {
+    console.warn("No App Actions registered");
   }
 }

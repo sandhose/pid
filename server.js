@@ -4,7 +4,7 @@ import Router from "react-router";
 import MainRouter from "./src/routers/main";
 import PathfindingHandler from "./server/pathfinding";
 import { readFileSync } from "fs";
-import AppFlux from "./src/flux/AppFlux";
+import ServerFlux from "./src/flux/ServerFlux";
 
 let indexPage = readFileSync(__dirname + "/build/index.html").toString();
 let app = express();
@@ -18,10 +18,11 @@ PathfindingHandler.updateGrid([
   [1, 1, 1, 1, 1, 1]
 ]);
 
+let flux = new ServerFlux();
+flux.getActions("motors").update({ speed: -1, direction: 0 });
+
 app.get('/app.js', (req, res) => res.sendFile(__dirname + '/build/app.js'));
 app.get('*', (req, res) => {
-  let flux = new AppFlux();
-  flux.getActions("motors").update({ speed: -1, direction: 0 });
   Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
     let app = React.renderToString(<Handler flux={flux} />);
     let fluxData = flux.serialize();

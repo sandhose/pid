@@ -13,8 +13,8 @@ import Router from "react-router";
 import MainRouter from "./routers/main";
 
 // Flux
-import AppFlux from "./flux/AppFlux";
-const flux = new AppFlux();
+import ClientFlux from "./flux/ClientFlux";
+const flux = new ClientFlux();
 let fluxData = window.unescape(document.getElementsByName('flux/data')[0].content);
 flux.deserialize(fluxData);
 
