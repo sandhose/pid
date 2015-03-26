@@ -6,7 +6,7 @@
   "scripts": {
     "server": "babel-node server.js",
     "dev": "node dev-server.js",
-    "watch": "SERVER_PORT=8081 nodemon -i node_modules/ --exec npm run server -- server.js & SERVER_PORT=8081 DEV_PORT=$PORT npm run dev",
+    "watch": "SERVER_PORT=8081 nodemon -i node_modules/ --ext \"js jsx\" --exec npm run server -- server.js & SERVER_PORT=8081 DEV_PORT=$PORT npm run dev",
     "build": "webpack -p --config webpack.production.config.js",
     "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
     "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/pheuter/essential-react",
   "devDependencies": {
+    "axios": "^0.5.2",
     "babel-core": "^4.7.8",
     "babel-loader": "^4.1.0",
     "coveralls": "^2.11.2",

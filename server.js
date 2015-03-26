@@ -6,6 +6,8 @@ import PathfindingHandler from "./server/pathfinding";
 import { readFileSync } from "fs";
 import ServerFlux from "./src/flux/ServerFlux";
 
+let motorsState = { speed: 0, direction: 0 };
+
 let indexPage = readFileSync(__dirname + "/build/index.html").toString();
 let app = express();
 
@@ -18,11 +20,12 @@ PathfindingHandler.updateGrid([
   [1, 1, 1, 1, 1, 1]
 ]);
 
-let flux = new ServerFlux();
-flux.getActions("motors").update({ speed: -1, direction: 0 });
 
 app.get('/app.js', (req, res) => res.sendFile(__dirname + '/build/app.js'));
 app.get('*', (req, res) => {
+  let flux = new ServerFlux();
+  flux.populateData({ motors: motorsState });
+
   Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
     let app = React.renderToString(<Handler flux={flux} />);
     let fluxData = flux.serialize();
@@ -69,6 +72,15 @@ app.post('/grid/random', function(req, res) {
 });
 
 app.post('/pathfinding/:x1/:y1/:x2/:y2', PathfindingHandler.handler);
+
+app.post('/motors/:speed/:direction', (req, res) => {
+  motorsState = {
+    speed: req.params.speed,
+    direction: req.params.direction
+  };
+
+  res.json(motorsState);
+});
 
 /******************
  *

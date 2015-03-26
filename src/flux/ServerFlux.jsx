@@ -1,8 +1,12 @@
 import AppFlux from "./AppFlux";
-import MotorsServerActions from "../actions/MotorsServerActions";
+import MotorsActions from "../actions/MotorsActions";
 
 export default class ServerFlux extends AppFlux {
   createAppActions() {
-    this.createActions("motors", MotorsServerActions);
+    this.createActions("motors", MotorsActions);
+  }
+
+  populateData({ motors }) {
+    this.getActions("motors").update(motors);
   }
 }

@@ -5,9 +5,9 @@ export default class LandingPage extends React.Component {
     const title = "Landing Page";
     const handleUpdate = (speed, direction) => { this.props.flux.getActions("motors").update({ speed, direction }); };
     const handleClick = (e) => { handleUpdate(
-        Math.ceil(Math.random() * 20) / 10 - 1,
-        Math.ceil(Math.random() * 20) / 10 - 1);
-    };
+        (Math.ceil(Math.random() * 20) - 10) / 10,
+        (Math.ceil(Math.random() * 20) - 10) / 10
+    ); };
 
     return (
       <div id="landing-page">
