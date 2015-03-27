@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import sass from "node-sass";
 import path from "path";
 import React from "react";
@@ -12,6 +13,7 @@ let motorsState = { speed: 0, direction: 0 };
 
 let indexPage = readFileSync(path.join(__dirname, "/build/index.html")).toString();
 let app = express();
+app.use(compression());
 
 PathfindingHandler.updateGrid([
   [1, 1, 0, 0, 1, 1],

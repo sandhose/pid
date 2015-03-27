@@ -14,10 +14,15 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader" }
-    ]
+    ],
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx']
-  }
+    extensions: ['', '.js', '.jsx'],
+  },
+
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin()
+  ]
 }

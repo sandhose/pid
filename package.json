@@ -1,6 +1,6 @@
 {
   "name": "pid-react",
-  "version": "0.3",
+  "version": "0.3.0",
   "description": "A minimal skeleton for building testable React apps using ES6.",
   "main": "src/main.jsx",
   "scripts": {
@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "babel": "^4.7.16",
+    "compression": "^1.4.3",
     "flummox": "^3.2.0",
     "pathfinding": "^0.4.16",
     "react": "^0.13.1",
