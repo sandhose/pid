@@ -8,12 +8,15 @@ import MainRouter from "./src/routers/main";
 import PathfindingHandler from "./server/pathfinding";
 import { readFileSync } from "fs";
 import ServerFlux from "./src/flux/ServerFlux";
+import Arduino from "./server/arduino";
 
 let motorsState = { speed: 0, direction: 0 };
 
 let indexPage = readFileSync(path.join(__dirname, "/build/index.html")).toString();
 let app = express();
 app.use(compression());
+
+let ino = new Arduino();
 
 PathfindingHandler.updateGrid([
   [1, 1, 0, 0, 1, 1],
