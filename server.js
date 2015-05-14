@@ -1,10 +1,9 @@
-import Arduino from "./server/arduino";
 import APIRouter from "./server/apiRouter";
 import WebServer from "./server/webserver";
+import MainManager from "./server/mainManager";
+import low from "lowdb";
 
-let motorsState = { speed: 0, direction: 0 };
 
-let ino = new Arduino();
 /*
 PathfindingHandler.updateGrid([
   [1, 1, 0, 0, 1, 1],
@@ -62,17 +61,20 @@ app.post('/motors/:speed/:direction', (req, res) => {
   res.json(motorsState);
 });
 */
-/******************
- *
- * Express server
- *
- *****************/
+
+let mainManager = new MainManager({
+  database: low("db.json")
+});
+
+let apiRouter = new APIRouter({
+  manager: mainManager
+});
 
 let app = new WebServer({
   compileSASS: process.env.NODE_ENV !== "production",
   fluxPrerender: true,
   routes: {
-    "/api": APIRouter
+    "/api": apiRouter.router
   }
 });
 

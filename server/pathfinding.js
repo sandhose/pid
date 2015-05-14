@@ -1,14 +1,12 @@
-var PF = require("pathfinding");
-
-var grid = null;
+import PF from "pathfinding";
 
 export default class Pathfinder {
     constructor() {
-        this.finder = new PF.DjikstraFinder({
+        this.finder = new PF.DijkstraFinder({
             allowDiagonal: true,
             dontCrossCorners: true,
         });
-    },
+    }
 
     set startPoint({ x, y }) {
         if(x >= this._pfGrid.width || x < 0 || y < 0 || y >= this._pfGrid.height) {
@@ -38,7 +36,7 @@ export default class Pathfinder {
 
     set grid(_grid) {
         this._grid = _grid;
-        this._pfGrid = new PF.Grid(_grid);
+        this._pfGrid = new PF.Grid(_grid.length, _grid[0].length, _grid);
     }
 
     get grid() {
@@ -47,26 +45,8 @@ export default class Pathfinder {
 
     get path() {
         if(!this._path) {
-            this._path = this.finder.findPath(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y, grid);
+            this._path = this.finder.findPath(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y, this._pfGrid);
         }
         return this._path;
     }
 }
-/*
-module.exports = {
-    handler: function(req, res) {
-        var finder = new PF.DijkstraFinder({
-            allowDiagonal: true,
-            dontCrossCorners: true,
-        });
-
-        var path = finder.findPath(req.params.x1, req.params.y1, req.params.x2, req.params.y2, grid);
-        path = PF.Util.compressPath(path);
-
-        res.json(path);
-    },
-    updateGrid: function(_grid) {
-        grid = new PF.Grid(_grid.length, _grid[0].length, _grid);
-    }
-};
-*/

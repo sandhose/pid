@@ -2,6 +2,7 @@ import path from "path";
 import { readFileSync } from "fs";
 import express from "express";
 import compression from "compression";
+import bodyParser from "body-parser";
 import sass from "node-sass";
 import Router from "react-router";
 import React from "react";
@@ -17,6 +18,7 @@ export default class WebServer extends express {
     this.indexPage = readFileSync(path.join(__dirname, "../build/index.html")).toString();
 
     this.app.use(compression());
+    this.app.use(bodyParser.json());
 
     if(compileSASS) {
       this.app.get("/style.css", (req, res) => {
