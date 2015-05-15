@@ -50,9 +50,9 @@ export default class Arduino extends EventEmitter {
   }
 
   handleData(chunk) {
+    console.log(chunk, qs.parse(chunk));
     this.emit("data", qs.parse(chunk));
-    return;
-    debug("recieved chunk '%s'", chunk);
+    /*debug("recieved chunk '%s'", chunk);
     this._buffer += chunk;
     let dataArray = this._buffer.split(";");
     while(dataArray.length > 1) {
@@ -68,6 +68,6 @@ export default class Arduino extends EventEmitter {
       }
     }
     this._buffer = dataArray[0];
-    debug("buffer is '%s'", this._buffer);
+    debug("buffer is '%s'", this._buffer);*/
   }
 }
