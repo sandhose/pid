@@ -42,10 +42,13 @@ export default class WebServer extends express {
       this.app.use(route, routes[route]);
     }
 
+    this.api = routes["/api"].handlers;
+    console.log(this.api);
+
     if(fluxPrerender) {
       this.app.get("*", (req, res) => {
         let flux = new ServerFlux();
-        //flux.populateData({ motors: motorsState });
+        flux.populateData({ grid: this.api["/grid"].GET() });
 
         Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
           let app = React.renderToString(<Handler flux={flux} />);

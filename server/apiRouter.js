@@ -9,6 +9,17 @@ export default class APIRouter {
     this._manager = manager;
     this.router = new Router();
 
+    this.handlers = {
+      "/grid": {
+        "POST": (data) => {
+          return this._manager.updateGrid(data);
+        },
+        "GET": () => {
+          return this._manager.grid;
+        }
+      }
+    };
+
     this.initRoutes();
   }
 
@@ -19,10 +30,10 @@ export default class APIRouter {
 
     this.router.route("/grid")
       .post((req, res) => {
-        res.json(this._manager.updateGrid(req.body));
+        res.json(this.handlers["/grid"].POST(req.body));
       })
       .get((req, res) => {
-        res.json(this._manager.grid);
+        res.json(this.handlers["/grid"].GET());
       });
 
     this.router.route("/position")

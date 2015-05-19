@@ -1,4 +1,5 @@
-const SERVO_INTERVAL = 10;
+const SERVO_INTERVAL = 100;
+let debug = require("debug")("gps");
 
 export default class GPS {
   constructor({ arduino, bounds = { minX: 0, minY: 0, maxX: 1000, maxY: 1000 }}) {
@@ -7,6 +8,7 @@ export default class GPS {
     this.bounds = bounds;
     this.tileSize = 10;
     this.orientation = -1;
+    this.rotation = null;
     this.rotationDelta = 0;
 
     this.targetAngle = 0;
@@ -26,7 +28,7 @@ export default class GPS {
     orientation = (this.rotationDelta - orientation + 360) % 360;
 
     this.doRotationUpdate(orientation);
-    //this.handleEchoUpdate({ x, y, orientation });
+    this.handleEchoUpdate({ captX: x, captY: y, orientation });
   }
 
   handleEchoUpdate({ captX, captY }) {
@@ -37,26 +39,25 @@ export default class GPS {
 
     this.x = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, x));
     this.y = Math.max(this.bounds.minY, Math.min(this.bounds.maxY, y));
+    debug("updated position: x=%s, y=%s", x, y);
   }
 
   doRotationUpdate(rotation) {
     let newOrientation = this.calcTargetOrientation(rotation, this.orientation);
-
-    //console.log("%s -> %s", this.orientation, newOrientation);
-
     this.orientation = newOrientation;
+    this.rotation = rotation;
     this.sendServoAngle(this.calcServoAngle(rotation, newOrientation));
   }
 
-  calcPosition({ x, y, orientation }) { // TODO: Need room bounds !
+  calcPosition({ x, y, orientation }) {
     if(orientation == 0) {
-      return { x, y };
+      return { x: this.bounds.minX + x, y: this.bounds.minY + y };
     } else if(orientation == 1) {
-      return { x: -y, y: x };
+      return { x: this.bounds.maxX - y, y: this.bounds.minY + x };
     } else if(orientation == 2) {
-      return { x: -y, y: x };
+      return { x: this.bounds.maxX - x, y: this.bounds.maxY - y };
     } else if(orientation == 3) {
-      return { x: y, y: -x };
+      return { x: this.bounds.minX + y, y: this.bounds.maxY - x };
     }
   }
 
@@ -64,9 +65,8 @@ export default class GPS {
     let targetAngle = lastOrientation * 90;
     let angleDelta = deviceRotation - targetAngle;
     if(angleDelta > 180) angleDelta -= 360;
-    //console.log({ targetAngle, angleDelta, deviceRotation });
 
-    if(angleDelta >= -60 && angleDelta <= 60 && lastOrientation !== -1) return lastOrientation;
+    if(angleDelta >= -50 && angleDelta <= 50 && lastOrientation !== -1) return lastOrientation;
 
     return (Math.round(deviceRotation / 90) + 4) % 4;
   }
@@ -76,7 +76,7 @@ export default class GPS {
     let angleDelta = deviceRotation - targetAngle;
     if(angleDelta > 180) angleDelta -= 360;
 
-    console.log({ targetAngle, angleDelta, deviceRotation });
+    debug({ targetAngle, angleDelta, deviceRotation });
 
     if(angleDelta <= -90 || angleDelta > 90) throw new RangeError("targetOrientation not reachable");
 
@@ -84,7 +84,7 @@ export default class GPS {
   }
 
   sendServoAngle(angle) {
-    console.log("sending angle", angle)
+    debug("sending angle", angle)
     this.ino.sendData({ servo: angle });
     this.lastServoAngle = angle;
     this.lastServoAngleTimestamp = Date.now();
@@ -101,7 +101,7 @@ export default class GPS {
     }
 
     this._bounds = { minX, minY, maxX, maxY };
-    console.log("grid bounds:", this._bounds);
+    debug("grid bounds:", this._bounds);
   }
 
   get bounds() {
@@ -117,7 +117,8 @@ export default class GPS {
       real: {
         x: this.x,
         y: this.y
-      }
+      },
+      rotation: this.rotation
     };
   }
 }

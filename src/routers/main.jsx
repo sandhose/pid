@@ -19,7 +19,7 @@ export default class MainRouter extends React.Component {
   render() {
     return (
       <div id="container">
-        <FluxComponent flux={this.props.flux} connectToStores={["motors"]}>
+        <FluxComponent flux={this.props.flux} connectToStores={["motors", "grid"]}>
           <NavBar />
           <RouteHandler />
         </FluxComponent>

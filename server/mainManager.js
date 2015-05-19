@@ -2,6 +2,7 @@ import Arduino from "./arduino";
 import Pathfinder from "./pathfinding";
 import GPS from "./gps";
 import low from "lowdb";
+let debug = require("debug")("manager");
 
 export default class MainManager {
   constructor({ database }) {
@@ -12,13 +13,15 @@ export default class MainManager {
     this.ino = new Arduino();
     this.pf = new Pathfinder();
     this.gps = new GPS({ arduino: this.ino });
+    this.grid = null;
 
     this.loadFromDB();
   }
 
   loadFromDB() {
+    debug("loading grid from db");
     let grid = this.db("grids").last();
-    if(grid instanceof Array) {
+    if(grid) {
       console.log("loaded grid from db", grid);
       this.grid = grid;
       this._propGridUpdate();

@@ -1,5 +1,6 @@
 import { Flux } from "flummox";
 import MotorsStore from "../stores/MotorsStore";
+import GridStore from "../stores/GridStore";
 
 export default class AppFlux extends Flux {
   constructor() {
@@ -7,6 +8,7 @@ export default class AppFlux extends Flux {
 
     this.createAppActions();
     this.createStore("motors", MotorsStore, this);
+    this.createStore("grid", GridStore, this);
   }
 
   createAppActions() {
