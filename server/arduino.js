@@ -27,7 +27,6 @@ export default class Arduino extends EventEmitter {
       }
 
       this.port = new SerialPort(comName, {
-        parser: serialport.parsers.readline("\n")
       });
       this.port.open((err) => {
         if(err) {
@@ -37,6 +36,7 @@ export default class Arduino extends EventEmitter {
 
         debug("conneted to arduino");
         this.emit("connected");
+	this.port.flush();
 
         this.port.on("data", (data) => { this.handleData(data) } );
       });
@@ -45,29 +45,21 @@ export default class Arduino extends EventEmitter {
 
   sendData(data) {
     let dataString = qs.stringify(data) + ";";
-    debug("sending", dataString);
     this.port.write(dataString);
   }
 
   handleData(chunk) {
-    console.log(chunk, qs.parse(chunk));
-    this.emit("data", qs.parse(chunk));
-    /*debug("recieved chunk '%s'", chunk);
     this._buffer += chunk;
-    let dataArray = this._buffer.split(";");
+    let dataArray = this._buffer.split("\n");
     while(dataArray.length > 1) {
       let dataString = dataArray.shift();
 
-      //let dataString = this._buffer.substring(0, index);
-      //this._buffer = this._buffer.substring(index);
-
-      debug("recieved dataString '%s', parsing...", dataString);
       let data = qs.parse(dataString);
       if(data) {
-        this.emit("data", data);
+        this.emit("serial data", data);
       }
     }
     this._buffer = dataArray[0];
-    debug("buffer is '%s'", this._buffer);*/
+    debug("buffer is '%s'", this._buffer);
   }
 }

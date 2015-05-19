@@ -3,7 +3,7 @@ const SERVO_INTERVAL = 10;
 export default class GPS {
   constructor({ arduino, bounds = { minX: 0, minY: 0, maxX: 1000, maxY: 1000 }}) {
     this.ino = arduino;
-    this.ino.on("data", data => this.handleDataUpdate(data));
+    this.ino.on("serial data", data => this.handleDataUpdate(data));
     this.bounds = bounds;
     this.tileSize = 10;
     this.orientation = -1;
@@ -15,19 +15,18 @@ export default class GPS {
   }
 
   handleDataUpdate({ x, y, orientation }) {
-    console.log({x, y, orientation });
     orientation = parseInt(orientation);
     x = parseInt(x);
     y = parseInt(y);
-    if(x === undefined || y === undefined || orientation == undefined) { return; };
+    if(Number.isNaN(x + y + orientation)) { return; };
     if(this.lastServoAngleTimestamp + SERVO_INTERVAL >= Date.now()) {
       return;
     }
 
-    orientation += this.rotationDelta;
+    orientation = (this.rotationDelta - orientation + 360) % 360;
 
     this.doRotationUpdate(orientation);
-    this.handleDataUpdate({ x, y, orientation });
+    //this.handleEchoUpdate({ x, y, orientation });
   }
 
   handleEchoUpdate({ captX, captY }) {
@@ -42,7 +41,8 @@ export default class GPS {
 
   doRotationUpdate(rotation) {
     let newOrientation = this.calcTargetOrientation(rotation, this.orientation);
-    if(newOrientation == this.orientation) return; // No need to change
+
+    //console.log("%s -> %s", this.orientation, newOrientation);
 
     this.orientation = newOrientation;
     this.sendServoAngle(this.calcServoAngle(rotation, newOrientation));
@@ -64,8 +64,9 @@ export default class GPS {
     let targetAngle = lastOrientation * 90;
     let angleDelta = deviceRotation - targetAngle;
     if(angleDelta > 180) angleDelta -= 360;
+    //console.log({ targetAngle, angleDelta, deviceRotation });
 
-    if(angleDelta >= -70 && angleDelta <= 70) return lastOrientation;
+    if(angleDelta >= -60 && angleDelta <= 60 && lastOrientation !== -1) return lastOrientation;
 
     return (Math.round(deviceRotation / 90) + 4) % 4;
   }
@@ -75,7 +76,9 @@ export default class GPS {
     let angleDelta = deviceRotation - targetAngle;
     if(angleDelta > 180) angleDelta -= 360;
 
-    if(angleDelta <= -90 || angleDelta >= 90) throw new RangeError("targetOrientation not reachable");
+    console.log({ targetAngle, angleDelta, deviceRotation });
+
+    if(angleDelta <= -90 || angleDelta > 90) throw new RangeError("targetOrientation not reachable");
 
     return angleDelta + 90; // Angle: [-90, 90] -> [0, 180]
   }
