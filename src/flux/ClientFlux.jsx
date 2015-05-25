@@ -7,4 +7,12 @@ export default class ClientFlux extends AppFlux {
     this.createActions("motors", MotorsClientActions);
     this.createActions("grid", GridClientActions);
   }
+
+  setRouter(router) {
+    super.setRouter(router);
+    this.getStore("grid").register(this.getActions("grid").save, (content) => {
+      this.getStore("grid").handleSave(content);
+      router.transitionTo("grid");
+    });
+  }
 }

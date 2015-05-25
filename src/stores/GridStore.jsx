@@ -6,6 +6,7 @@ export default class GridStore extends Store {
 
     const gridActions = flux.getActions("grid");
     this.register(gridActions.update, this.handleUpdate);
+    this.register(gridActions.reload, this.handleUpdate);
 
     this.state = {
       grid: {
@@ -17,7 +18,13 @@ export default class GridStore extends Store {
   }
 
   handleUpdate(content) {
-    this.setState(content);
+    console.log("grid update", content);
+    this.setState({ grid: content });
+  }
+
+  handleSave(content) {
+    console.log("saved grid", content);
+    this.setState({ grid: content });
   }
 
   static serialize(state) {

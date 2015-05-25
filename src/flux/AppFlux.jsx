@@ -11,6 +11,10 @@ export default class AppFlux extends Flux {
     this.createStore("grid", GridStore, this);
   }
 
+  setRouter(router) {
+    this.router = router;
+  }
+
   createAppActions() {
     console.warn("No App Actions registered");
   }

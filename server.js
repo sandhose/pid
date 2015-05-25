@@ -3,65 +3,6 @@ import WebServer from "./server/webserver";
 import MainManager from "./server/mainManager";
 import low from "lowdb";
 
-
-/*
-PathfindingHandler.updateGrid([
-  [1, 1, 0, 0, 1, 1],
-  [1, 0, 0, 0, 0, 1],
-  [0, 0, 1, 1, 0, 0],
-  [0, 0, 0, 1, 0, 0],
-  [1, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1]
-]);
-*/
-
-
-/*app.post('/landing', function(req, res) {
-  res.json({
-    title: "Landing Page"
-  });
-});
-
-app.post('/home', function(req, res) {
-  res.json({
-    title: "Home Page"
-  });
-});
-
-app.post('/grid', function(req, res) {
-  res.json([
-    [1, 1, 0, 0, 1, 1],
-    [1, 0, 0, 0, 0, 1],
-    [0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0, 0],
-    [1, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1]
-  ]);
-});
-
-app.post('/grid/random', function(req, res) {
-  let size = 20, grid = [];
-  for(let i = 0; i < size; i++) {
-    grid[i] = [];
-    for(let j = 0; j < size; j++) {
-      grid[i][j] = Math.random() > 0.7 ? 1 : 0;
-    }
-  }
-  res.json(grid);
-});
-
-app.post('/pathfinding/:x1/:y1/:x2/:y2', PathfindingHandler.handler);
-
-app.post('/motors/:speed/:direction', (req, res) => {
-  motorsState = {
-    speed: req.params.speed,
-    direction: req.params.direction
-  };
-
-  res.json(motorsState);
-});
-*/
-
 let mainManager = new MainManager({
   database: low("db.json")
 });
@@ -74,7 +15,7 @@ let app = new WebServer({
   compileSASS: process.env.NODE_ENV !== "production",
   fluxPrerender: true,
   routes: {
-    "/api": apiRouter.router
+    "/api": apiRouter
   }
 });
 

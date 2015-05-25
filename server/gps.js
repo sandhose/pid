@@ -13,10 +13,15 @@ export default class GPS {
 
     this.targetAngle = 0;
     this.lastServoAngle = 0;
-    this.lastServoAngleTimestamp = Date.now() + 1000;
+    this.lastServoAngleTimestamp = Date.now() + 200;
+  }
+
+  fake() {
+    this.handleDataUpdate({ x: 20, y: 40, orientation: 70 });
   }
 
   handleDataUpdate({ x, y, orientation }) {
+    debug("data update", { x, y, orientation });
     orientation = parseInt(orientation);
     x = parseInt(x);
     y = parseInt(y);

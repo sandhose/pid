@@ -36,7 +36,7 @@ export default class Pathfinder {
 
     set grid(_grid) {
         this._grid = _grid;
-        this._pfGrid = new PF.Grid(_grid.length, _grid[0].length, _grid);
+        this._pfGrid = new PF.Grid(_grid[0].length, _grid.length, _grid);
     }
 
     get grid() {

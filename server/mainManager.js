@@ -16,6 +16,7 @@ export default class MainManager {
     this.grid = null;
 
     this.loadFromDB();
+    setTimeout(() => this.gps.fake(), 500);
   }
 
   loadFromDB() {

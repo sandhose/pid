@@ -11,8 +11,8 @@ export default class APIRouter {
 
     this.handlers = {
       "/grid": {
-        "POST": (data) => {
-          return this._manager.updateGrid(data);
+        "POST": ({ matrix, tileSize }) => {
+          return this._manager.updateGrid({ matrix, tileSize });
         },
         "GET": () => {
           return this._manager.grid;

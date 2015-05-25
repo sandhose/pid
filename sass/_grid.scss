@@ -1,0 +1,27 @@
+.grid {
+    height: 200px;
+    width: 200px;
+    margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+
+    .line {
+        flex: 1 0 auto;
+        display: flex;
+
+        .cell {
+            flex: 1 0 auto;
+            border: solid 1px #CCC;
+
+            &.blocked {
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAFElEQVQI12NggIAaKM1Qy4AFNAMAGmwBfQqMC64AAAAASUVORK5CYII=');
+            }
+        }
+    }
+
+    &.editing .cell:hover {
+        background-color: #DDD;
+        cursor: pointer;
+    }
+}

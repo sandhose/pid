@@ -11,10 +11,9 @@ import ServerFlux from "../src/flux/ServerFlux";
 import MainRouter from "../src/routers/main";
 
 
-export default class WebServer extends express {
+export default class WebServer {
   constructor({ compileSASS = false, fluxPrerender = true, routes = {} }) {
-    this.app = super();
-
+    this.app = express();
     this.indexPage = readFileSync(path.join(__dirname, "../build/index.html")).toString();
 
     this.app.use(compression());
@@ -25,6 +24,7 @@ export default class WebServer extends express {
         let result = sass.renderSync({
           file: path.join(__dirname, "../sass/style.scss"),
           outFile: path.join(__dirname, "../.tmp/style.css"),
+          includePaths: [path.join(__dirname, "../node_modules/materialize-sass/sass/")],
           sourceMap: true,
           sourceMapEmbed: true,
           sourceMapContents: true
@@ -36,19 +36,22 @@ export default class WebServer extends express {
       });
     }
 
+    this.app.use("/font", express.static("node_modules/materialize-sass/font/", { index: false }));
     this.app.use(express.static("build", { index: false }));
 
     for(let route in routes) {
-      this.app.use(route, routes[route]);
+      this.app.use(route, routes[route].router);
     }
 
     this.api = routes["/api"].handlers;
-    console.log(this.api);
 
     if(fluxPrerender) {
       this.app.get("*", (req, res) => {
         let flux = new ServerFlux();
-        flux.populateData({ grid: this.api["/grid"].GET() });
+        flux.populateData({
+          grid: this.api["/grid"].GET(),
+          motors: { direction: 0, speed: 0 }
+        });
 
         Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
           let app = React.renderToString(<Handler flux={flux} />);

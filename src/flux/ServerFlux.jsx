@@ -8,7 +8,7 @@ export default class ServerFlux extends AppFlux {
     this.createActions("grid", GridActions);
   }
 
-  populateData({ motors }) {
+  populateData({ motors, grid }) {
     this.getActions("motors").update(motors);
     this.getActions("grid").update(grid);
   }

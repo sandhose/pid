@@ -1,16 +1,25 @@
 import React from "react";
 import { Link } from "react-router";
 
-let NavBar = React.createClass({
+class NavLink extends Link {
+  render() {
+    return <li className={this.getActiveState() ? "active" : "" }>{super.render()}</li>;
+  }
+}
 
+export default class NavBar extends React.Component {
   render() {
     return (
-        <ul>
-          <Link to="landing">Home</Link>
-          <Link to="grid">Grid</Link>
-        </ul>
+        <header>
+          <nav>
+            <div className="nav-wrapper container">
+              <ul>
+                <NavLink activeClassName="active" to="landing">Home</NavLink>
+                <NavLink activeClassName="active" to="grid">Grid</NavLink>
+              </ul>
+            </div>
+          </nav>
+        </header>
     );
   }
-});
-
-export default NavBar;
+};

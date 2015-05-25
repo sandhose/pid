@@ -4,9 +4,11 @@ import serialport, { SerialPort } from "serialport";
 import qs from "qs";
 
 export default class Arduino extends EventEmitter {
-  constructor() {
+  constructor(...params) {
+    super(...params);
     debug("looking for an arduino...");
     this._buffer = "";
+    this.connected = false;
     serialport.list((err, ports) => {
       if(err) {
         debug("error while listing ports", err);
@@ -37,6 +39,7 @@ export default class Arduino extends EventEmitter {
         debug("conneted to arduino");
         this.emit("connected");
 	this.port.flush();
+	this.connected = true;
 
         this.port.on("data", (data) => { this.handleData(data) } );
       });
@@ -45,6 +48,10 @@ export default class Arduino extends EventEmitter {
 
   sendData(data) {
     let dataString = qs.stringify(data) + ";";
+    if(!this.connected) {
+      debug("cant send data, not connected !", dataString);
+      return;
+    }
     this.port.write(dataString);
   }
 

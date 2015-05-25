@@ -2,9 +2,9 @@ import { Actions } from "flummox";
 
 export default class GridActions extends Actions {
   update(content) {
-    let { matrix, tileSize } = content;
+    let { timestamp = Date.now(), matrix, tileSize } = content;
     return {
-      timestamp: Date.now(),
+      timestamp,
       matrix,
       tileSize
     };

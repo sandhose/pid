@@ -22,6 +22,8 @@ flux.deserialize(fluxData);
 const DOM_APP_EL_ID = "app";
 
 // Start the router
-Router.run(MainRouter.getRoutes(), Router.HistoryLocation, function(Handler, state) {
+let router = Router.run(MainRouter.getRoutes(), Router.HistoryLocation, function(Handler, state) {
     React.render(<Handler flux={flux} />, document.getElementById(DOM_APP_EL_ID));
 });
+
+flux.setRouter(router);
