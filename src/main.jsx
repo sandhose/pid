@@ -16,7 +16,9 @@ import MainRouter from "./routers/main";
 import ClientFlux from "./flux/ClientFlux";
 const flux = new ClientFlux();
 let fluxData = window.unescape(document.getElementsByName('flux/data')[0].content);
-flux.deserialize(fluxData);
+if(fluxData != "") {
+    flux.deserialize(fluxData);
+}
 
 // ID of the DOM element to mount app on
 const DOM_APP_EL_ID = "app";

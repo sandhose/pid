@@ -9,7 +9,7 @@
     "watch": "SERVER_PORT=8081 nodemon -i node_modules/ --ext \"js jsx\" --exec npm run server -- server.js & SERVER_PORT=8081 DEV_PORT=$PORT npm run dev",
     "build": "npm run build-js && npm run build-scss",
     "build-js": "webpack -p --config webpack.production.config.js",
-    "build-scss": "node-sass sass/style.scss --output-style compressed -o build/",
+    "build-scss": "node-sass sass/style.scss --include-path=node_modules/materialize-sass/sass/ --output-style compressed -o build/",
     "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
     "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
     "coveralls": "cat coverage/lcov.info | coveralls",

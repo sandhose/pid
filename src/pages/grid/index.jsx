@@ -8,6 +8,14 @@ let GridIndexPage = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
+  getDefaultProps() {
+    return {
+      grid: {
+        tileSize: 10,
+        matrix: [[]]
+      }
+    };
+  },
   getInitialState() {
     return {
       height: this.props.grid.matrix.length,
