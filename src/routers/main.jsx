@@ -22,7 +22,7 @@ export default class MainRouter extends React.Component {
       <div className="app-container">
         <NavBar />
         <main className="container">
-          <FluxComponent connectToStores={["grid"]} flux={this.props.flux}>
+          <FluxComponent connectToStores={["grid", "pathfinding"]} flux={this.props.flux}>
             <RouteHandler />
           </FluxComponent>
         </main>

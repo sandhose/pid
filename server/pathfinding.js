@@ -45,7 +45,7 @@ export default class Pathfinder {
 
     get path() {
         if(!this._path) {
-            this._path = this.finder.findPath(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y, this._pfGrid);
+            this._path = this.finder.findPath(this._startPoint.x, this._startPoint.y, this._endPoint.x, this._endPoint.y, this._pfGrid);
         }
         return this._path;
     }

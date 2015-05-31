@@ -1,20 +1,18 @@
 import React from "react";
+import Grid from "../../components/grid_component.jsx";
+import PathOverlay from "../../components/path_overlay_component.jsx";
 
 export default class LandingPage extends React.Component {
   render() {
-    const title = "Landing Page";
-    const handleUpdate = (speed, direction) => { this.props.flux.getActions("motors").update({ speed, direction }); };
-    const handleClick = (e) => { handleUpdate(
-        (Math.ceil(Math.random() * 20) - 10) / 10,
-        (Math.ceil(Math.random() * 20) - 10) / 10
-    ); };
-
     return (
       <div id="landing-page">
-        <h1>{title}</h1>
-        <div>Motors speed: {this.props.speed}</div>
-        <div>Motors direction: {this.props.direction}</div>
-        <button onClick={handleClick}>Update !</button>
+        <div className="grid-container" style={{
+            height: this.props.grid.tileSize * this.props.grid.matrix.length,
+            width: this.props.grid.tileSize * this.props.grid.matrix[0].length
+        }}>
+          <Grid grid={this.props.grid} />
+          <PathOverlay path={this.props.path} grid={this.props.grid} />
+        </div>
       </div>
     );
   }

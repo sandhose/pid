@@ -1,33 +1,24 @@
 import { Store } from "flummox";
 
-export default class GridStore extends Store {
+export default class PathfindingStore extends Store {
   constructor(flux) {
     super();
 
-    const gridActions = flux.getActions("grid");
-    this.register(gridActions.update, this.handleUpdate);
-    this.register(gridActions.reload, this.handleUpdate);
+    const pathfindingActions = flux.getActions("pathfinding");
+    this.register(pathfindingActions.update, this.handleUpdate);
 
     this.state = {
-      grid: {
-        timestamp: 0,
-        matrix: [[]],
-        tileSize: 10
-      }
+      path: []
     };
   }
 
   handleUpdate(content) {
-    console.log("grid update", content);
-    this.setState({ grid: content });
-  }
-
-  handleSave(content) {
-    console.log("saved grid", content);
-    this.setState({ grid: content });
+    console.log("path update", content);
+    this.setState(content);
   }
 
   static serialize(state) {
+    console.log("serialize state", state);
     return JSON.stringify(state);
   }
 

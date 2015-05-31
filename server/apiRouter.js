@@ -17,6 +17,20 @@ export default class APIRouter {
         "GET": () => {
           return this._manager.grid;
         }
+      },
+      "/path": {
+        "GET": () => {
+          return this._manager.pf.path;
+        }
+      },
+      "/target": {
+        "GET": () => {
+          return this._manager.pf.endPoint;
+        },
+        "POST": ({ x, y }) => {
+          this._manager.pf.endPoint = { x, y };
+          return this._manager.pf.endPoint;
+        }
       }
     };
 
@@ -36,6 +50,10 @@ export default class APIRouter {
         res.json(this.handlers["/grid"].GET());
       });
 
+    this.router.get("/path", (req, res) => {
+      res.json(this.handlers["/path"].GET());
+    });
+
     this.router.route("/position")
       .post((req, res) => {
         this._manager.gps.handleEchoUpdate(req.body);
@@ -43,6 +61,14 @@ export default class APIRouter {
       })
       .get((req, res) => {
         res.json(this._manager.gps.position);
+      });
+
+    this.router.route("/target")
+      .post((req, res) => {
+        res.json(this.handlers["/target"].POST(req.body));
+      })
+      .get((req, res) => {
+        res.json(this.handlers["/target"].GET());
       });
   }
 }

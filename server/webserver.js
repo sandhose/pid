@@ -50,12 +50,14 @@ export default class WebServer {
         let flux = new ServerFlux();
         flux.populateData({
           grid: this.api["/grid"].GET(),
-          motors: { direction: 0, speed: 0 }
+          motors: { direction: 0, speed: 0 },
+          pathfinding: { path: this.api["/path"].GET() }
         });
 
         Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {
           let app = React.renderToString(<Handler flux={flux} />);
           let fluxData = flux.serialize();
+          console.log(fluxData);
           res.send(
             this.indexPage
               .replace("<!-- AppNode -->", app)

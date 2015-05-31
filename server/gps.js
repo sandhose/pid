@@ -1,8 +1,11 @@
+import { EventEmitter } from "events";
+
 const SERVO_INTERVAL = 100;
 let debug = require("debug")("gps");
 
-export default class GPS {
+export default class GPS extends EventEmitter {
   constructor({ arduino, bounds = { minX: 0, minY: 0, maxX: 1000, maxY: 1000 }}) {
+    super();
     this.ino = arduino;
     this.ino.on("serial data", data => this.handleDataUpdate(data));
     this.bounds = bounds;
@@ -45,6 +48,8 @@ export default class GPS {
     this.x = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, x));
     this.y = Math.max(this.bounds.minY, Math.min(this.bounds.maxY, y));
     debug("updated position: x=%s, y=%s", x, y);
+
+    this.emit("position update", this.position);
   }
 
   doRotationUpdate(rotation) {

@@ -15,8 +15,13 @@ export default class MainManager {
     this.gps = new GPS({ arduino: this.ino });
     this.grid = null;
 
+    this.gps.on("position update", (pos) => { this.pf.startPoint = pos.tile });
+
     this.loadFromDB();
-    setTimeout(() => this.gps.fake(), 500);
+    setTimeout(() => {
+      this.pf.endPoint = { x: 1, y: 1 };
+      this.gps.fake()
+    }, 400);
   }
 
   loadFromDB() {
