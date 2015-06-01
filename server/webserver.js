@@ -51,7 +51,11 @@ export default class WebServer {
         flux.populateData({
           grid: this.api["/grid"].GET(),
           motors: { direction: 0, speed: 0 },
-          pathfinding: { path: this.api["/path"].GET() }
+          pathfinding: {
+            path: this.api["/path"].GET(),
+            target: this.api["/target"].GET(),
+            position: this.api["/position"].GET().tile
+          }
         });
 
         Router.run(MainRouter.getRoutes(), req.url, (Handler, state) => {

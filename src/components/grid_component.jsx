@@ -12,7 +12,8 @@ let Grid = React.createClass({
           [0, 0, 0],
           [0, 0, 0]
         ]
-      }
+      },
+      position: { x: null, y: null }
     };
   },
   getInitialState() {
@@ -34,7 +35,7 @@ let Grid = React.createClass({
       this.state.grid.matrix.map((row, rowIndex) => {
         return (<div className="line" key={rowIndex}>{
           row.map((cell, cellIndex) => {
-            return <GridCell key={rowIndex*100 + cellIndex} onBlockedUpdate={(blocked) => { this.updateCell(rowIndex, cellIndex, blocked) }} blocked={Boolean(cell)} />;
+            return <GridCell key={rowIndex*100 + cellIndex} onBlockedUpdate={(blocked) => { this.updateCell(rowIndex, cellIndex, blocked) }} blocked={Boolean(cell)} selected={this.props.position.x === rowIndex && this.props.position.y === cellIndex} />;
           })
         }</div>);
       })

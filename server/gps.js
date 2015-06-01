@@ -20,7 +20,7 @@ export default class GPS extends EventEmitter {
   }
 
   fake() {
-    this.handleDataUpdate({ x: 20, y: 40, orientation: 70 });
+    this.handleDataUpdate({ x: 40, y: 40, orientation: 70 });
   }
 
   handleDataUpdate({ x, y, orientation }) {

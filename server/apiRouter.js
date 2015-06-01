@@ -23,6 +23,15 @@ export default class APIRouter {
           return this._manager.pf.path;
         }
       },
+      "/position": {
+        "GET": () => {
+          return this._manager.gps.position;
+        },
+        "POST": (data) => {
+          this._manager.gps.handleEchoUpdate(data);
+          return this._manager.gps.position;
+        }
+      },
       "/target": {
         "GET": () => {
           return this._manager.pf.endPoint;
@@ -56,11 +65,10 @@ export default class APIRouter {
 
     this.router.route("/position")
       .post((req, res) => {
-        this._manager.gps.handleEchoUpdate(req.body);
-        res.json(this._manager.gps.position);
+        res.json(this.handlers["/position"].POST(req.body));
       })
       .get((req, res) => {
-        res.json(this._manager.gps.position);
+        res.json(this.handlers["/position"].GET());
       });
 
     this.router.route("/target")

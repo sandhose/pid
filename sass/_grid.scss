@@ -20,6 +20,9 @@
             &.blocked {
                 background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAFElEQVQI12NggIAaKM1Qy4AFNAMAGmwBfQqMC64AAAAASUVORK5CYII=');
             }
+            &.position {
+                background-color: #CCC;
+            }
         }
     }
 

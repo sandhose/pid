@@ -8,8 +8,12 @@ export default class Pathfinder {
         });
     }
 
+    getFinder() {
+        return this.finder;
+    }
+
     set startPoint({ x, y }) {
-        if(x >= this._pfGrid.width || x < 0 || y < 0 || y >= this._pfGrid.height) {
+        if(x > this._pfGrid.width || x < 0 || y < 0 || y > this._pfGrid.height) {
             throw new RangeError("Start point out of bound");
         }
 
@@ -22,6 +26,7 @@ export default class Pathfinder {
     }
 
     set endPoint({ x, y }) {
+        console.log("changing endpoint", { x, y });
         if(x >= this._pfGrid.width || x < 0 || y < 0 || y >= this._pfGrid.height) {
             throw new RangeError("End point out of bound");
         }
@@ -45,7 +50,13 @@ export default class Pathfinder {
 
     get path() {
         if(!this._path) {
-            this._path = this.finder.findPath(this._startPoint.x, this._startPoint.y, this._endPoint.x, this._endPoint.y, this._pfGrid);
+            console.log("generating new path", {
+                startPoint: this._startPoint,
+                endPoint: this._endPoint
+            });
+            let finder = this.getFinder();
+            this._pfGrid = new PF.Grid(this._grid[0].length, this._grid.length, this._grid);
+            this._path = finder.findPath(this._startPoint.x, this._startPoint.y, this._endPoint.x, this._endPoint.y, this._pfGrid);
         }
         return this._path;
     }

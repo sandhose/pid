@@ -7,13 +7,15 @@ export default class LandingPage extends React.Component {
                 matrix: [],
                 tileSize: 10
             },
-            path: []
+            path: [],
+            onClick: () => {}
         }
     }
     render() {
         return (
             <svg height={this.props.grid.tileSize * this.props.grid.matrix.length}
-                 width={this.props.grid.tileSize * this.props.grid.matrix[0].length}>
+                 width={this.props.grid.tileSize * this.props.grid.matrix[0].length}
+                 onClick={this.props.onClick}>
                 <path d={this.getPath()} stroke="#EECC33" fill="transparent" strokeWidth="5" />
             </svg>
         );
